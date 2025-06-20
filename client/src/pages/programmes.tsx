@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Filter } from "lucide-react";
 import { SECTEURS } from "@shared/schema";
 import * as XLSX from "xlsx";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Programmes() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -18,6 +19,7 @@ export default function Programmes() {
   const [secteurFilter, setSecteurFilter] = useState("");
 
   const { data: programmes = [], isLoading } = useProgrammes();
+  const { canEdit } = useAuth();
 
   const filteredProgrammes = programmes.filter((programme) => {
     const matchesSearch = programme.nom.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -83,7 +85,7 @@ export default function Programmes() {
       <Header
         title="Gestion des Programmes"
         description="Vue d'ensemble et gestion des programmes de développement économique"
-        onAdd={handleAdd}
+        onAdd={canEdit ? handleAdd : undefined}
         addButtonText="Nouveau Programme"
         searchValue={searchValue}
         onSearchChange={setSearchValue}

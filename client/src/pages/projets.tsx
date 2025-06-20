@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Filter } from "lucide-react";
 import { ETATS_AVANCEMENT } from "@shared/schema";
 import * as XLSX from "xlsx";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Projets() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function Projets() {
 
   const { data: projets = [], isLoading } = useProjets();
   const { data: programmes = [] } = useProgrammes();
+  const { canEdit } = useAuth();
 
   const filteredProjets = projets.filter((projet) => {
     const matchesSearch = projet.nom.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -110,7 +112,7 @@ export default function Projets() {
       <Header
         title="Gestion des Projets"
         description="Vue d'ensemble et gestion des projets associés aux programmes"
-        onAdd={handleAdd}
+        onAdd={canEdit ? handleAdd : undefined}
         addButtonText="Nouveau Projet"
         searchValue={searchValue}
         onSearchChange={setSearchValue}

@@ -8,6 +8,7 @@ import { useDeleteProgramme } from "@/hooks/use-programmes";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ProgrammeDetails } from "./programme-details";
 import type { Programme } from "@shared/schema";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProgrammeTableProps {
   programmes: Programme[];
@@ -18,6 +19,7 @@ interface ProgrammeTableProps {
 export default function ProgrammeTable({ programmes, isLoading, onEdit }: ProgrammeTableProps) {
   const deleteProgramme = useDeleteProgramme();
   const [selectedProgramme, setSelectedProgramme] = useState<Programme | null>(null);
+  const { canEdit } = useAuth();
 
   const formatAmount = (amount: string | null) => {
     if (!amount) return "Non défini";
@@ -134,34 +136,38 @@ export default function ProgrammeTable({ programmes, isLoading, onEdit }: Progra
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => onEdit(programme)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <Trash2 className="h-4 w-4" />
+                          {canEdit && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => onEdit(programme)}
+                              >
+                                <Edit className="h-4 w-4" />
                               </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Cette action est irréversible. Cela supprimera définitivement le programme.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(programme.id)}>
-                                  Supprimer
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Cette action est irréversible. Cela supprimera définitivement le programme.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDelete(programme.id)}>
+                                      Supprimer
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </>
+                          )}
                         </div>
                       </TableCell>
                     </TableRow>

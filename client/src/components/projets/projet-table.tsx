@@ -8,6 +8,7 @@ import { useDeleteProjet } from "@/hooks/use-projets";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ProjetDetails } from "./projet-details";
 import type { Projet, Programme } from "@shared/schema";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProjetTableProps {
   projets: Projet[];
@@ -20,6 +21,7 @@ interface ProjetTableProps {
 export default function ProjetTable({ projets, programmes, isLoading, onEdit, getProgrammeName }: ProjetTableProps) {
   const deleteProjet = useDeleteProjet();
   const [selectedProjet, setSelectedProjet] = useState<Projet | null>(null);
+  const { canEdit } = useAuth();
 
   const formatAmount = (amount: string) => {
     return new Intl.NumberFormat("fr-FR", {
@@ -132,34 +134,38 @@ export default function ProjetTable({ projets, programmes, isLoading, onEdit, ge
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => onEdit(projet)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <Trash2 className="h-4 w-4" />
+                          {canEdit && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => onEdit(projet)}
+                              >
+                                <Edit className="h-4 w-4" />
                               </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Cette action est irréversible. Cela supprimera définitivement le projet.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(projet.id)}>
-                                  Supprimer
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Cette action est irréversible. Cela supprimera définitivement le projet.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDelete(projet.id)}>
+                                      Supprimer
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </>
+                          )}
                         </div>
                       </TableCell>
                     </TableRow>
