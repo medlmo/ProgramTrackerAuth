@@ -1,7 +1,7 @@
 import { Search, Plus, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useLocation } from "wouter";
+import { useNavigate } from "react-router-dom";
 import { HeaderMenu } from "./header-menu";
 
 interface HeaderProps {
@@ -21,7 +21,7 @@ export default function Header({
   searchValue = "",
   onSearchChange,
 }: HeaderProps) {
-  const [, setLocation] = useLocation();
+  const navigate = useNavigate();
 
   return (
     <header className="bg-card border-b border-border px-6 py-4">
@@ -30,7 +30,7 @@ export default function Header({
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setLocation("/")}
+            onClick={() => navigate("/")}
             className="hover:bg-accent"
             title="Retour à l'accueil"
           >

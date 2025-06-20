@@ -70,8 +70,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = await response.json();
         localStorage.setItem('authToken', data.token);
         setUser(data.user);
-        // Force a re-render to update all components
-        window.location.reload();
         return true;
       }
       return false;
@@ -97,9 +95,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const hasRole = (role: UserRole): boolean => {
     if (!user) return false;
-    if (user.role === 'admin') return true;
-    if (role === 'editeur') return user.role === 'editeur' || user.role === 'admin';
-    if (role === 'decideur') return true; // All authenticated users can view
+    if (role === 'admin') return user.role === 'admin';
+    if (role === 'editeur') return user.role === 'admin' || user.role === 'editeur';
+    if (role === 'decideur') return user.role === 'admin' || user.role === 'editeur' || user.role === 'decideur';
     return false;
   };
 

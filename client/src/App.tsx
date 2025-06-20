@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Routes, Route } from "react-router-dom";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -32,14 +32,14 @@ function AuthenticatedApp() {
     <div className="flex h-screen bg-background">
       <Sidebar />
       <main className="flex-1 overflow-hidden">
-        <Switch>
-          <Route path="/" component={Dashboard} />
-          <Route path="/programmes" component={Programmes} />
-          <Route path="/projets" component={Projets} />
-          <Route path="/analyses" component={Analyses} />
-          <Route path="/users" component={Users} />
-          <Route component={NotFound} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/programmes" element={<Programmes />} />
+          <Route path="/projets" element={<Projets />} />
+          <Route path="/analyses" element={<Analyses />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
     </div>
   );

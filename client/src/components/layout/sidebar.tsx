@@ -1,37 +1,37 @@
-import { Link, useLocation } from "wouter";
+import { Link, useLocation } from "react-router-dom";
 import { FolderOpen, ListTodo, BarChart3, Users, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
 export default function Sidebar() {
-  const [location] = useLocation();
+  const location = useLocation();
   const { user, logout, canAdmin } = useAuth();
 
   const navigation = [
     {
       name: "Programmes",
-      href: "/programmes",
+      to: "/programmes",
       icon: FolderOpen,
-      current: location === "/programmes" || location === "/",
+      current: location.pathname === "/programmes" || location.pathname === "/",
     },
     {
       name: "Projets",
-      href: "/projets",
+      to: "/projets",
       icon: ListTodo,
-      current: location === "/projets",
+      current: location.pathname === "/projets",
     },
     {
       name: "Analyses",
-      href: "/analyses",
+      to: "/analyses",
       icon: BarChart3,
-      current: location === "/analyses",
+      current: location.pathname === "/analyses",
     },
     ...(canAdmin ? [{
       name: "Utilisateurs",
-      href: "/users",
+      to: "/users",
       icon: Users,
-      current: location === "/users",
+      current: location.pathname === "/users",
     }] : []),
   ];
 
@@ -51,7 +51,7 @@ export default function Sidebar() {
             const Icon = item.icon;
             return (
               <li key={item.name}>
-                <Link href={item.href}>
+                <Link to={item.to}>
                   <button
                     className={cn(
                       "w-full flex items-center px-4 py-3 text-left rounded-lg transition-colors",
