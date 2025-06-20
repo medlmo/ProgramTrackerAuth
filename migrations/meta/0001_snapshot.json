@@ -1,0 +1,237 @@
+{
+  "id": "3ed8fbb0-69e6-46fc-a340-e7cd143474b6",
+  "prevId": "087a0b7b-4c22-4980-9823-b64b063bdafb",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.programmes": {
+      "name": "programmes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nom": {
+          "name": "nom",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "secteur": {
+          "name": "secteur",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "objectif_global": {
+          "name": "objectif_global",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "partenaires": {
+          "name": "partenaires",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "montant_global": {
+          "name": "montant_global",
+          "type": "numeric(12, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "participation_region": {
+          "name": "participation_region",
+          "type": "numeric(12, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_debut": {
+          "name": "date_debut",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "duree": {
+          "name": "duree",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.projets": {
+      "name": "projets",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nom": {
+          "name": "nom",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "programme_id": {
+          "name": "programme_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "objectifs": {
+          "name": "objectifs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "partenaires": {
+          "name": "partenaires",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "montant_global": {
+          "name": "montant_global",
+          "type": "numeric(12, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "participation_region": {
+          "name": "participation_region",
+          "type": "numeric(12, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "maitre_ouvrage": {
+          "name": "maitre_ouvrage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "provinces": {
+          "name": "provinces",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "communes": {
+          "name": "communes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "indicateurs_qualitatifs": {
+          "name": "indicateurs_qualitatifs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "indicateurs_quantitatifs": {
+          "name": "indicateurs_quantitatifs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "etat_avancement": {
+          "name": "etat_avancement",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "remarques": {
+          "name": "remarques",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_debut": {
+          "name": "date_debut",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "duree": {
+          "name": "duree",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "projets_programme_id_programmes_id_fk": {
+          "name": "projets_programme_id_programmes_id_fk",
+          "tableFrom": "projets",
+          "tableTo": "programmes",
+          "columnsFrom": [
+            "programme_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
