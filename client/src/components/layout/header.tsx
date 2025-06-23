@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { HeaderMenu } from "./header-menu";
+import logo from "@/attached_assets/Logo.png";
 
 interface HeaderProps {
   title: string;
@@ -27,6 +28,7 @@ export default function Header({
     <header className="bg-card border-b border-border px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
+          <img src={logo} alt="Logo Région Souss Massa" style={{ height: 48 }} />
           <Button
             variant="ghost"
             size="icon"

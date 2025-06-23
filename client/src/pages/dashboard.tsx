@@ -57,8 +57,8 @@ export default function Dashboard() {
           />
           
           <StatsCard
-            title="Projets Actifs"
-            value={stats?.projetsActifs || 0}
+            title="Total des projets"
+            value={stats?.totalProjets || 0}
             icon={ListTodo}
             iconColor="text-accent"
             iconBgColor="bg-green-100 dark:bg-green-900/20"
