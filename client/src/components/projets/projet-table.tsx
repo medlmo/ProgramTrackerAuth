@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, Edit, Trash2 } from "lucide-react";
+import { Eye, Edit, Trash2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,6 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { ProjetDetails } from "./projet-details";
 import type { Projet, Programme } from "@shared/schema";
 import { useAuth } from "@/contexts/AuthContext";
+import { exportProjetToWord } from "@/lib/export-projet-word";
 
 interface ProjetTableProps {
   projets: Projet[];
@@ -133,6 +134,13 @@ export default function ProjetTable({ projets, programmes, isLoading, onEdit, ge
                             onClick={() => setSelectedProjet(projet)}
                           >
                             <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => exportProjetToWord(projet, getProgrammeName(projet.programmeId))}
+                          >
+                            <Download className="h-4 w-4" />
                           </Button>
                           {canEdit && (
                             <>
