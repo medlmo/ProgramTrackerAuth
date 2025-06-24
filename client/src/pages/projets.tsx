@@ -12,6 +12,8 @@ import { Download, Filter } from "lucide-react";
 import { ETATS_AVANCEMENT } from "@shared/schema";
 import * as XLSX from "xlsx";
 import { useAuth } from "@/contexts/AuthContext";
+import { partenaires } from "@/lib/partenaires";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 export default function Projets() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -19,6 +21,9 @@ export default function Projets() {
   const [searchValue, setSearchValue] = useState("");
   const [programmeFilter, setProgrammeFilter] = useState("");
   const [etatFilter, setEtatFilter] = useState("");
+  const [provinceFilter, setProvinceFilter] = useState("");
+  const [maitreOuvrageFilter, setMaitreOuvrageFilter] = useState<string[]>([]);
+  const [maitreOuvrageSearch, setMaitreOuvrageSearch] = useState("");
 
   const { data: projets = [], isLoading } = useProjets();
   const { data: programmes = [] } = useProgrammes();
@@ -29,7 +34,8 @@ export default function Projets() {
                          (projet.objectifs && projet.objectifs.toLowerCase().includes(searchValue.toLowerCase()));
     const matchesProgramme = !programmeFilter || programmeFilter === "tous" || projet.programmeId.toString() === programmeFilter;
     const matchesEtat = !etatFilter || etatFilter === "tous" || projet.etatAvancement === etatFilter;
-    return matchesSearch && matchesProgramme && matchesEtat;
+    const matchesMaitreOuvrage = maitreOuvrageFilter.length === 0 || maitreOuvrageFilter.includes(projet.maitreOuvrage);
+    return matchesSearch && matchesProgramme && matchesEtat && matchesMaitreOuvrage;
   });
 
   const handleAdd = () => {
@@ -159,6 +165,18 @@ export default function Projets() {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">
+                    Maître d'ouvrage
+                  </label>
+                  <MultiSelect
+                    options={partenaires.map((p) => ({ label: p, value: p }))}
+                    selected={maitreOuvrageFilter}
+                    onChange={setMaitreOuvrageFilter}
+                    placeholder="Le maître d'ouvrage"
+                    className="w-48"
+                  />
                 </div>
               </div>
               <div className="flex items-center space-x-2">

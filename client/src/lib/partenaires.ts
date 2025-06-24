@@ -38,7 +38,6 @@ export const partenaires = [
   // Collectivités territoriales
   "Wilaya de la Région Souss Massa",
   "Région Souss Massa",
-  "Conseil Régional Souss Massa",
   "Préfecture de Agadir Ida Outanane",
   "Préfecture de Inezgane Ait Melloul",
   "Province de Tiznit",

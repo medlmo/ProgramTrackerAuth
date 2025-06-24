@@ -186,4 +186,13 @@ export const communes = [
   "Tizounine",
 ] as const;
 
-export type Commune = typeof communes[number]; 
+export type Commune = typeof communes[number];
+
+export const PROVINCES = [
+  "Agadir Ida-Outanane",
+  "Inezgane-Ait Melloul",
+  "Chtouka-Ait Baha",
+  "Taroudant",
+  "Tiznit",
+  "Tata"
+] as const; 

@@ -43,6 +43,17 @@ export default function Analyses() {
     return acc;
   }, {}) || {};
 
+  // Analyses par province
+  const analysesProvince = projets?.reduce((acc: any, projet: any) => {
+    if (Array.isArray(projet.provinces)) {
+      projet.provinces.forEach((province: string) => {
+        if (!acc[province]) acc[province] = 0;
+        acc[province] += 1;
+      });
+    }
+    return acc;
+  }, {}) || {};
+
   const formatAmount = (amount: number) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
@@ -129,6 +140,29 @@ export default function Analyses() {
                   </div>
                 ))}
                 {Object.keys(analysesEtat).length === 0 && (
+                  <p className="text-muted-foreground text-sm">Aucune donnée disponible</p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Analyse par province */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <BarChart3 className="mr-2 h-5 w-5" />
+                Répartition des Projets par Province
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {Object.entries(analysesProvince).map(([province, count]: [string, any]) => (
+                  <div key={province} className="flex justify-between items-center">
+                    <span className="text-sm font-medium">{province}</span>
+                    <span className="text-sm font-semibold">{count} projet(s)</span>
+                  </div>
+                ))}
+                {Object.keys(analysesProvince).length === 0 && (
                   <p className="text-muted-foreground text-sm">Aucune donnée disponible</p>
                 )}
               </div>
