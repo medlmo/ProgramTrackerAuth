@@ -24,6 +24,7 @@ export default function Projets() {
   const [provinceFilter, setProvinceFilter] = useState("");
   const [maitreOuvrageFilter, setMaitreOuvrageFilter] = useState<string[]>([]);
   const [maitreOuvrageSearch, setMaitreOuvrageSearch] = useState("");
+  const [partenaireFilter, setPartenaireFilter] = useState<string[]>([]);
 
   const { data: projets = [], isLoading } = useProjets();
   const { data: programmes = [] } = useProgrammes();
@@ -35,7 +36,12 @@ export default function Projets() {
     const matchesProgramme = !programmeFilter || programmeFilter === "tous" || projet.programmeId.toString() === programmeFilter;
     const matchesEtat = !etatFilter || etatFilter === "tous" || projet.etatAvancement === etatFilter;
     const matchesMaitreOuvrage = maitreOuvrageFilter.length === 0 || maitreOuvrageFilter.includes(projet.maitreOuvrage);
-    return matchesSearch && matchesProgramme && matchesEtat && matchesMaitreOuvrage;
+    const matchesPartenaires =
+      partenaireFilter.length === 0 ||
+      (typeof projet.partenaires === "string"
+        ? partenaireFilter.every((p) => projet.partenaires && projet.partenaires.includes(p))
+        : true);
+    return matchesSearch && matchesProgramme && matchesEtat && matchesMaitreOuvrage && matchesPartenaires;
   });
 
   const handleAdd = () => {
@@ -174,8 +180,20 @@ export default function Projets() {
                     options={partenaires.map((p) => ({ label: p, value: p }))}
                     selected={maitreOuvrageFilter}
                     onChange={setMaitreOuvrageFilter}
-                    placeholder="Le maître d'ouvrage"
-                    className="w-48"
+                    placeholder="Tous Le(s) maître(s) d'ouvrage"
+                    className="w-64"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">
+                    Partenaires
+                  </label>
+                  <MultiSelect
+                    options={partenaires.map((p) => ({ label: p, value: p }))}
+                    selected={partenaireFilter}
+                    onChange={setPartenaireFilter}
+                    placeholder="Tous les partenaires"
+                    className="w-64"
                   />
                 </div>
               </div>

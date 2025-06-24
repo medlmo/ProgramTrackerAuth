@@ -11,12 +11,15 @@ import { Download, Filter } from "lucide-react";
 import { SECTEURS } from "@shared/schema";
 import * as XLSX from "xlsx";
 import { useAuth } from "@/contexts/AuthContext";
+import { partenaires } from "@/lib/partenaires";
+import { MultiSelect } from "@/components/ui/multi-select";
 
 export default function Programmes() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProgramme, setEditingProgramme] = useState<any>(null);
   const [searchValue, setSearchValue] = useState("");
   const [secteurFilter, setSecteurFilter] = useState("");
+  const [partenaireFilter, setPartenaireFilter] = useState<string[]>([]);
 
   const { data: programmes = [], isLoading } = useProgrammes();
   const { canEdit } = useAuth();
@@ -25,7 +28,10 @@ export default function Programmes() {
     const matchesSearch = programme.nom.toLowerCase().includes(searchValue.toLowerCase()) ||
                          (programme.objectifGlobal && programme.objectifGlobal.toLowerCase().includes(searchValue.toLowerCase()));
     const matchesSecteur = !secteurFilter || secteurFilter === "tous" || programme.secteur === secteurFilter;
-    return matchesSearch && matchesSecteur;
+    const matchesPartenaires =
+      partenaireFilter.length === 0 ||
+      partenaireFilter.every((p) => (programme.partenaires || "").includes(p));
+    return matchesSearch && matchesSecteur && matchesPartenaires;
   });
 
   const handleAdd = () => {
@@ -114,6 +120,18 @@ export default function Programmes() {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">
+                    Partenaires
+                  </label>
+                  <MultiSelect
+                    options={partenaires.map((p) => ({ label: p, value: p }))}
+                    selected={partenaireFilter}
+                    onChange={setPartenaireFilter}
+                    placeholder="Tous les partenaires"
+                    className="w-64"
+                  />
                 </div>
               </div>
               <div className="flex items-center space-x-2">
