@@ -21,7 +21,7 @@ export default function Projets() {
   const [searchValue, setSearchValue] = useState("");
   const [programmeFilter, setProgrammeFilter] = useState("");
   const [etatFilter, setEtatFilter] = useState("");
-  const [provinceFilter, setProvinceFilter] = useState("");
+  const [provinceFilter, setProvinceFilter] = useState<string[]>([]);
   const [maitreOuvrageFilter, setMaitreOuvrageFilter] = useState<string[]>([]);
   const [maitreOuvrageSearch, setMaitreOuvrageSearch] = useState("");
   const [partenaireFilter, setPartenaireFilter] = useState<string[]>([]);
@@ -29,6 +29,9 @@ export default function Projets() {
   const { data: projets = [], isLoading } = useProjets();
   const { data: programmes = [] } = useProgrammes();
   const { canEdit } = useAuth();
+
+  // Extraire dynamiquement toutes les provinces distinctes des projets
+  const allProvinces = Array.from(new Set(projets.flatMap((projet) => projet.provinces || [])));
 
   const filteredProjets = projets.filter((projet) => {
     const matchesSearch = projet.nom.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -40,8 +43,13 @@ export default function Projets() {
       partenaireFilter.length === 0 ||
       (typeof projet.partenaires === "string"
         ? partenaireFilter.every((p) => projet.partenaires && projet.partenaires.includes(p))
-        : true);
-    return matchesSearch && matchesProgramme && matchesEtat && matchesMaitreOuvrage && matchesPartenaires;
+        : false);
+    const matchesProvinces =
+      provinceFilter.length === 0 ||
+      (Array.isArray(projet.provinces)
+        ? provinceFilter.every((p) => projet.provinces && projet.provinces.includes(p))
+        : false);
+    return matchesSearch && matchesProgramme && matchesEtat && matchesMaitreOuvrage && matchesPartenaires && matchesProvinces;
   });
 
   const handleAdd = () => {
@@ -193,6 +201,18 @@ export default function Projets() {
                     selected={partenaireFilter}
                     onChange={setPartenaireFilter}
                     placeholder="Tous les partenaires"
+                    className="w-64"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">
+                    Provinces
+                  </label>
+                  <MultiSelect
+                    options={allProvinces.map((p) => ({ label: p, value: p }))}
+                    selected={provinceFilter}
+                    onChange={setProvinceFilter}
+                    placeholder="Toutes les provinces"
                     className="w-64"
                   />
                 </div>
